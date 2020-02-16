@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SectionAnalyzer": {
+      "commandName": "Project",
+      "commandLineArgs": "-f C:\\REPOs\\SectionTriangleAnalyzer\\data.txt"
+    }
+  }
+}
