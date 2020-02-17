@@ -12,7 +12,9 @@ namespace SectionAnalyzer
 
         private List<double> _sections;
 
-        private List<double> _maxSection;
+        private List<double> _maxSections;
+
+        private List<List<Point>> _maxSectionsCoords;
 
         private List<bool> _result;
 
@@ -25,11 +27,13 @@ namespace SectionAnalyzer
             _data = data;
             _triangles = new List<Triangle>();
             _sections = new List<double>();
-            _maxSection = new List<double>();
+            _maxSections = new List<double>();
             _result = new List<bool>();
+            _maxSectionsCoords = new List<List<Point>>();
             ParseData();
             CalcSectionMax();
             CheckMaxSectionTriangles();
+            CalcCoordsSectionMax();
         }
 
         private void ParseData()
@@ -59,13 +63,28 @@ namespace SectionAnalyzer
         private void CalcSectionMax()
         {
             foreach (var triangle in _triangles)
-                _maxSection.Add((2 / (Math.Sqrt(3))) * GetLength(triangle.Point1, triangle.Point2));
+                _maxSections.Add((2 / (Math.Sqrt(3))) * GetLength(triangle.Point1, triangle.Point2));
+        }
+
+        private void CalcCoordsSectionMax()
+        {
+            double coeff = 0.5;
+            foreach (var triangle in _triangles)
+            {
+                var pointSection1 = new Point((triangle.Point1.X + coeff * triangle.Point2.X) / (1 + coeff),
+                                              (triangle.Point1.Y + coeff * triangle.Point2.Y) / (1 + coeff));
+                var pointSection2 = new Point((triangle.Point2.X + coeff * triangle.Point3.X) / (1 + coeff),
+                                              (triangle.Point2.Y + coeff * triangle.Point3.Y) / (1 + coeff));
+                var pointSection3 = new Point((triangle.Point3.X + coeff * triangle.Point1.X) / (1 + coeff),
+                                              (triangle.Point3.Y + coeff * triangle.Point1.Y) / (1 + coeff));
+                _maxSectionsCoords.Add(new List<Point>() {pointSection1,pointSection2, pointSection3});
+            }
         }
 
         private void CheckMaxSectionTriangles()
         {
             for (int i = 0; i < _sections.Count; i++)
-                _result.Add(_sections[i] < _maxSection[i] ? true : false);
+                _result.Add(_sections[i] < _maxSections[i] ? true : false);
         }
 
         /// <summary>
@@ -78,8 +97,10 @@ namespace SectionAnalyzer
             for (int i = 0; i < _triangles.Count; i++)
             {
                 var resMessage = _result[i] ? "valid" : "invalid";
-                resultReport.Add(String.Format("For a triangle with coordinates({0}), ({1}), ({2}) the section of length {3} is {4}.",
-                    _triangles[i].Point1, _triangles[i].Point2, _triangles[i].Point3, _sections[i], resMessage));
+                var coordMessage = _result[i] ? String.Format("\nThe coordinates of the intersection points of the sections and the sides of the rectangle:" +
+                                                "\npoint1:({0}), point2:({1}), point3:({2})", _maxSectionsCoords[i][0], _maxSectionsCoords[i][1], _maxSectionsCoords[i][2]) : "";
+                resultReport.Add(String.Format("For the triangle with coordinates({0}), ({1}), ({2}) the section of length {3} is {4}." + coordMessage,
+                                               _triangles[i].Point1, _triangles[i].Point2, _triangles[i].Point3, _sections[i], resMessage));
             }
             return resultReport;
         }
