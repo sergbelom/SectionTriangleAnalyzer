@@ -26,3 +26,4 @@ x1 y1 x2 y2 x3 y3 L
 Основная идея алгоритма описана в: [теоретическом решении.](https://github.com/sergbelom/SectionTriangleAnalyzer/blob/master/SectionAnalyzer_Theory.pdf)
 
 **TODO List:**
+- реализовать unit тесты.
