@@ -1,2 +1,2 @@
 # SectionTriangleAnalyzer
-![Example](https://github.com/sergbelom/SectionTriangleAnalyzer/Theory.jpg)
+![Example](https://github.com/sergbelom/SectionTriangleAnalyzer/blob/master/Theory.jpg)
