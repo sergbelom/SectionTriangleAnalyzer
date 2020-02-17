@@ -6,20 +6,37 @@ namespace SectionAnalyzer
 {
     class Triangle
     {
-        public Point point1 { get; set; }
-        public Point point2 { get; set; }
-        public Point point3 { get; set; }
+        private Point _point1;
+        private Point _point2;
+        private Point _point3;
 
-        public Triangle(double[] coords)
+        public Point Point1
         {
-            point1 = new Point(coords[0], coords[1]);
-            point2 = new Point(coords[2], coords[3]);
-            point3 = new Point(coords[4], coords[5]);
+            get => _point1;
+            set { _point1 = value; }
         }
 
-        public bool IsEquilateral()
+        public Point Point2
         {
-            return true;
+            get => _point2;
+            set { _point2 = value; }
+        }
+
+        public Point Point3
+        {
+            get => _point3;
+            set { _point3 = value; }
+        }
+
+        /// <summary>
+        /// Create Triangle.
+        /// </summary>
+        /// <param name="coords"></param>
+        public Triangle(double[] coords)
+        {
+            _point1 = new Point(coords[0], coords[1]);
+            _point2 = new Point(coords[2], coords[3]);
+            _point3 = new Point(coords[4], coords[5]);
         }
     }
 }
